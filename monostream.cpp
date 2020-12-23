@@ -38,8 +38,8 @@ int main()
 		int m = std::rand();
 		Vec.push_back(m);
 	}
-	std::vector <int> Block1(10000); //всего будет 20 блоков по 5000 элементов
-	std::vector <int> Block2; //конечный блок из 20 элементов
+	std::vector <int> Block1(10000); //всего будет 10 блоков по 10000 элементов
+	std::vector <int> Block2; //конечный блок из 10 элементов
 	auto start = std::chrono::system_clock::now();
 	for (int h = 0; h < 1000000; h++)
 	{
