@@ -33,24 +33,24 @@ int main()
 {
 	std::srand(std::time(nullptr));
 	std::vector <int> Vec;
-	for (int h = 0; h < 100000; h++)
+	for (int h = 0; h < 1000000; h++)
 	{
 		int m = std::rand();
 		Vec.push_back(m);
 	}
-	std::vector <int> Block1(5000); //всего будет 20 блоков по 5000 элементов
+	std::vector <int> Block1(10000); //всего будет 20 блоков по 5000 элементов
 	std::vector <int> Block2; //конечный блок из 20 элементов
 	auto start = std::chrono::system_clock::now();
-	for (int h = 0; h < 100000; h++)
+	for (int h = 0; h < 1000000; h++)
 	{
-		if (h % 5000 == 4999)
+		if (h % 10000 == 9999)
 		{
-			Block1[h % 5000] = Vec[h];
+			Block1[h % 10000] = Vec[h];
 			Block2.push_back(Find_max_element(Block1));
 		}
 		else
 		{
-			Block1[h % 5000] = Vec[h];
+			Block1[h % 10000] = Vec[h];
 		}
 	}
 	int rezult = Find_min_element(Block2);
