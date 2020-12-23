@@ -13,6 +13,7 @@ void Find_max_element(std::vector <int> Vec, int low_border, int high_border, st
 		{
 			max_element = Vec[low_border + 1];
 		}
+		low_border += 1;
 	}
 	Block.push_back(max_element);
 }
@@ -44,7 +45,7 @@ int main()
 	std::vector <std::thread*> Thread(10); //вектор 10 потоков
 	for (int h = 0; h < 10; h++)
 	{
-		Thread[h] = new std::thread (Find_max_element, 10000*h, 9999 + 10000 * h, Block_rez);
+		Thread[h] = new std::thread (Find_max_element, Vec, 100000*h, 99999 + 100000 * h, Block_rez);
 	}
 	for (int h = 0; h < 10; h++)
 	{
