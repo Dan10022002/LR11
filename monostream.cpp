@@ -3,23 +3,25 @@
 #include <ctime>
 #include <chrono>
 
-int Find_max_element(std::vector <int> Vec)
+int Find_max_element(std::vector <int>& Vec, int low_border, int high_border)
 {
-	int max_element = Vec[0];
-	for (int h = 1; h < Vec.size(); h++)
+	int max_element = Vec[low_border];
+	low_border += 1;
+	while (low_border != (high_border + 1))
 	{
-		if (Vec[h] > max_element)
+	    if (Vec[low_border] > max_element)
 		{
-			max_element = Vec[h];
+			max_element = Vec[low_border];
 		}
+		low_border += 1;
 	}
 	return max_element;
 }
 
-int Find_min_element(std::vector <int> Vec)
+int Find_min_element(std::vector <int>& Vec)
 {
 	int min_element = Vec[0];
-	for (int h = 1; h < Vec.size(); h++)
+	for (int h = 1; h < 10; h++)
 	{
 		if (Vec[h] < min_element)
 		{
@@ -38,25 +40,17 @@ int main()
 		int m = std::rand();
 		Vec.push_back(m);
 	}
-	std::vector <int> Block1(10000); //всего будет 10 блоков по 10000 элементов
-	std::vector <int> Block2; //конечный блок из 10 элементов
+
+	std::vector <int> Block_rez; //конечный блок из 10 элементов
 	auto start = std::chrono::system_clock::now();
-	for (int h = 0; h < 1000000; h++)
+	for (int h = 0; h < 10; h++)
 	{
-		if (h % 10000 == 9999)
-		{
-			Block1[h % 10000] = Vec[h];
-			Block2.push_back(Find_max_element(Block1));
-		}
-		else
-		{
-			Block1[h % 10000] = Vec[h];
-		}
+		Block_rez.push_back(Find_max_element(Vec, 100000*h, 99999 + 100000 * h));
 	}
-	int rezult = Find_min_element(Block2);
+	int rezult = Find_min_element(Block_rez);
 	auto end = std::chrono::system_clock::now();
 	auto time = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
 	std::cout << "The result is " << rezult << "\n";
 	std::cout << "The working time of the program is " << time.count() << " nanoseconds." << '\n';
-	
+
 }
