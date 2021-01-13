@@ -52,5 +52,4 @@ int main()
 	auto time = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
 	std::cout << "The result is " << rezult << "\n";
 	std::cout << "The working time of the program is " << time.count() << " nanoseconds." << '\n';
-
 }
