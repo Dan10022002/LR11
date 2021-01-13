@@ -11,16 +11,17 @@ void Find_max_element(std::vector <int>& Vec, int low_border, int high_border, s
 {
 	mu.lock();
 	int max_element = Vec[low_border];
-	while ((low_border + 1) != high_border)
+	low_border += 1;
+	while (low_border != (high_border + 1))
 	{
-		if (Vec[low_border + 1] > max_element)
+		if (Vec[low_border] > max_element)
 		{
-			max_element = Vec[low_border + 1];
+			max_element = Vec[low_border];
 		}
 		low_border += 1;
 	}
-    std::cout << "Thread id = " <<std::this_thread::get_id() << " max element: " << max_element << "\n";
-    Block.push_back(max_element);
+    	std::cout << "Thread id = " <<std::this_thread::get_id() << " max element: " << max_element << "\n";
+    	Block.push_back(max_element);
 	mu.unlock();
 	
 }
