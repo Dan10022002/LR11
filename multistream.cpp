@@ -58,10 +58,6 @@ int main()
 	{
 		Thread[h].join();
 	}
-	for (int h: Block_rez)
-	{
-	    std::cout << h << "\n";
-	}
 	int rezult = Find_min_element(Block_rez);
 	auto end = std::chrono::system_clock::now();
 	auto time = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
