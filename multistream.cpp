@@ -3,9 +3,13 @@
 #include <ctime>
 #include <chrono>
 #include <thread>
+#include <mutex>
 
-void Find_max_element(std::vector <int> Vec, int low_border, int high_border, std::vector <int> Block)
+std::mutex mu;
+
+void Find_max_element(std::vector <int>& Vec, int low_border, int high_border, std::vector <int>& Block)
 {
+	mu.lock();
 	int max_element = Vec[low_border];
 	while ((low_border + 1) != high_border)
 	{
@@ -15,7 +19,10 @@ void Find_max_element(std::vector <int> Vec, int low_border, int high_border, st
 		}
 		low_border += 1;
 	}
-	Block.push_back(max_element);
+    std::cout << "Thread id = " <<std::this_thread::get_id() << " max element: " << max_element << "\n";
+    Block.push_back(max_element);
+	mu.unlock();
+	
 }
 
 int Find_min_element(std::vector <int> Vec)
@@ -42,23 +49,23 @@ int main()
 	}
 	std::vector <int> Block_rez;
 	auto start = std::chrono::system_clock::now();
-	std::vector <std::thread*> Thread(10); //вектор 10 потоков
+	std::vector <std::thread> Thread(10); //вектор 10 потоков
 	for (int h = 0; h < 10; h++)
 	{
-		Thread[h] = new std::thread (Find_max_element, Vec, 100000*h, 99999 + 100000 * h, Block_rez);
+		Thread[h] = std::thread (Find_max_element, std::ref(Vec), 100000*h, 99999 + 100000 * h, std::ref(Block_rez));
 	}
 	for (int h = 0; h < 10; h++)
 	{
-		Thread[h] -> join();
+		Thread[h].join();
+	}
+	for (int h: Block_rez)
+	{
+	    std::cout << h << "\n";
 	}
 	int rezult = Find_min_element(Block_rez);
 	auto end = std::chrono::system_clock::now();
 	auto time = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
 	std::cout << "The result is " << rezult << "\n";
 	std::cout << "The working time of the program is " << time.count() << " nanoseconds." << '\n';
-	for (int h = 0; h < 10; h++)
-	{
-		delete Thread[h];
-	}
 	return 0;
 }
