@@ -21,7 +21,7 @@ int Find_max_element(std::vector <int>& Vec, int low_border, int high_border)
 int Find_min_element(std::vector <int>& Vec)
 {
 	int min_element = Vec[0];
-	for (int h = 1; h < 10; h++)
+	for (int h = 1; h < Vec.size(); h++)
 	{
 		if (Vec[h] < min_element)
 		{
@@ -41,11 +41,15 @@ int main()
 		Vec.push_back(m);
 	}
 
-	std::vector <int> Block_rez; //конечный блок из 10 элементов
+	std::vector <int> Block_rez; 
+	std::cout << "Enter the number of the critical elements: ";
+	unsigned int n;
+	std::cin >> n;
+	int critical_elements = 1000000/n;
 	auto start = std::chrono::system_clock::now();
-	for (int h = 0; h < 10; h++)
+	for (int h = 0; h < n; h++)
 	{
-		Block_rez.push_back(Find_max_element(Vec, 100000*h, 99999 + 100000 * h));
+		Block_rez.push_back(Find_max_element(Vec, critical_elements*h, (critical_elements - 1) + critical_elements * h));
 	}
 	int rezult = Find_min_element(Block_rez);
 	auto end = std::chrono::system_clock::now();
