@@ -57,7 +57,7 @@ int main()
 	std::vector <std::thread> Thread(n);
 	for (int h = 0; h < n; h++)
 	{
-		Thread[h] = std::thread (Find_max_element, std::ref(Vec), elements_in_thread*h, 99999 + elements_in_thread * h, std::ref(Block_rez));
+		Thread[h] = std::thread (Find_max_element, std::ref(Vec), elements_in_thread*h, (elements_in_thread - 1) + elements_in_thread * h, std::ref(Block_rez));
 	}
 	for (int h = 0; h < n; h++)
 	{
