@@ -9,7 +9,6 @@ std::mutex mu;
 
 void Find_max_element(std::vector <int>& Vec, int low_border, int high_border, std::vector <int>& Block)
 {
-	mu.lock();
 	int max_element = Vec[low_border];
 	low_border += 1;
 	while (low_border != (high_border + 1))
@@ -20,16 +19,17 @@ void Find_max_element(std::vector <int>& Vec, int low_border, int high_border, s
 		}
 		low_border += 1;
 	}
-    	std::cout << "Thread id = " <<std::this_thread::get_id() << " max element: " << max_element << "\n";
-    	Block.push_back(max_element);
-	mu.unlock();
+	mu.lock();
+    std::cout << "Thread id = " <<std::this_thread::get_id() << " max element: " << max_element << "\n";
+    mu.unlock();
+    Block.push_back(max_element);
 	
 }
 
 int Find_min_element(std::vector <int> Vec)
 {
 	int min_element = Vec[0];
-	for (int h = 1; h < 10; h++)
+	for (int h = 1; h < Vec.size(); h++)
 	{
 		if (Vec[h] < min_element)
 		{
@@ -49,13 +49,17 @@ int main()
 		Vec.push_back(m);
 	}
 	std::vector <int> Block_rez;
+	std::cout << "Enter the number of the threads: ";
+	unsigned int n;
+	std::cin >> n;
+	int elements_in_thread = 1000000/n;
 	auto start = std::chrono::system_clock::now();
-	std::vector <std::thread> Thread(10); //вектор 10 потоков
-	for (int h = 0; h < 10; h++)
+	std::vector <std::thread> Thread(n);
+	for (int h = 0; h < n; h++)
 	{
-		Thread[h] = std::thread (Find_max_element, std::ref(Vec), 100000*h, 99999 + 100000 * h, std::ref(Block_rez));
+		Thread[h] = std::thread (Find_max_element, std::ref(Vec), elements_in_thread*h, 99999 + elements_in_thread * h, std::ref(Block_rez));
 	}
-	for (int h = 0; h < 10; h++)
+	for (int h = 0; h < n; h++)
 	{
 		Thread[h].join();
 	}
